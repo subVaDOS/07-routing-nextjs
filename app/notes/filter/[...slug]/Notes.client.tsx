@@ -43,7 +43,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
 
   const { data, isLoading, isError, isSuccess } = useQuery({
     queryKey: ['notes', currentPage, search, tag],
-    queryFn: () => fetchNotes(currentPage, 12, search, tag),
+    queryFn: () => fetchNotes(search, currentPage),
     placeholderData: keepPreviousData,
     initialData: currentPage === 1 && search === '' ? initialData : undefined,
   });
@@ -64,7 +64,11 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox value={inputValue} onInputChange={handleSearchChange} />
+        <SearchBox
+          value={inputValue}
+          onInputChange={handleSearchChange}
+          onSearch={debouncedSearch}
+        />
         {totalPages > 1 && (
           <Pagination
             page={currentPage}
