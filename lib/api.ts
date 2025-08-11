@@ -20,7 +20,7 @@ export async function fetchNotes(
       ...(search && { search }),
     },
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTES_TOKEN}`,
+      Authorization: `Bearer ${myKey}`,
     },
   });
 
@@ -30,7 +30,7 @@ export async function fetchNotes(
 export async function createNote(newNote: CreateNote): Promise<Note> {
   const response = await axios.post<Note>(`${baseUrl}`, newNote, {
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTES_TOKEN}`,
+      Authorization: `Bearer ${myKey}`,
     },
   });
   return response.data;
@@ -39,7 +39,7 @@ export async function createNote(newNote: CreateNote): Promise<Note> {
 export async function deleteNote(id: string): Promise<Note> {
   const response = await axios.delete<Note>(`${baseUrl}/${id}`, {
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTES_TOKEN}`,
+      Authorization: `Bearer ${myKey}`,
     },
   });
   return response.data;
@@ -48,7 +48,7 @@ export async function deleteNote(id: string): Promise<Note> {
 export async function fetchNoteById(id: string): Promise<Note> {
   const response = await axios.get<Note>(`${baseUrl}/${id}`, {
     headers: {
-      Authorization: `Bearer ${process.env.NEXT_PUBLIC_NOTES_TOKEN}`,
+      Authorization: `Bearer ${myKey}`,
     },
   });
   return response.data;
