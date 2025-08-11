@@ -1,7 +1,9 @@
 import axios from "axios";
 import type { NewNoteData, Note } from "../types/note";
-const myKey = process.env.NEXT_PUBLIC_NOTES_TOKEN;
+
 const BASE_URL = "https://notehub-public.goit.study/api";
+
+const myKey = process.env.NEXT_PUBLIC_NOTES_TOKEN;
 
 export interface FetchNotesResponse {
   notes: Note[];
