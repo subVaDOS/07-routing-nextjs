@@ -1,33 +1,33 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { useQuery, keepPreviousData } from '@tanstack/react-query';
-import { useDebouncedCallback } from 'use-debounce';
-import css from './NotesPage.module.css';
-import NoteList from '@/components/NoteList/NoteList';
-import { fetchNotes } from '@/lib/api';
-import type { Note } from '../../../../types/note';
-import type { FetchNotesRes } from '@/lib/api';
-import SearchBox from '@/components/SearchBox/SearchBox';
-import Modal from '@/components/Modal/Modal';
-import Pagination from '@/components/Pagination/Pagination';
-import NoteForm from '@/components/NoteForm/NoteForm';
-import Loader from '@/components/Loader/Loader';
-import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
-import toast, { Toaster } from 'react-hot-toast';
+import { useState, useEffect } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import { useDebouncedCallback } from "use-debounce";
+import css from "./NotesPage.module.css";
+import NoteList from "@/components/NoteList/NoteList";
+import { fetchNotes } from "@/lib/api";
+import type { Note } from "../../../../types/note";
+import type { FetchNotesResponse } from "@/lib/api";
+import SearchBox from "@/components/SearchBox/SearchBox";
+import Modal from "@/components/CreateNoteModal/CreateNoteModal";
+import Pagination from "@/components/Pagination/Pagination";
+import NoteForm from "@/components/NoteForm/NoteForm";
+import Loader from "@/components/Loader/Loader";
+import ErrorMessage from "@/components/ErrorMessage/ErrorMessage";
+import toast, { Toaster } from "react-hot-toast";
 
 type NotesClientProps = {
-  initialData: FetchNotesRes;
+  initialData: FetchNotesResponse;
   tag: string;
 };
 
 export default function NotesClient({ initialData, tag }: NotesClientProps) {
-  const [search, setSearch] = useState('');
-  const [inputValue, setInputValue] = useState('');
+  const [search, setSearch] = useState("");
+  const [inputValue, setInputValue] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setSearch('');
+    setSearch("");
     setCurrentPage(1);
   }, [tag]);
 
@@ -42,10 +42,10 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   }, 1000);
 
   const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ['notes', currentPage, search, tag],
-    queryFn: () => fetchNotes(search, currentPage),
+    queryKey: ["notes", currentPage, search, tag],
+    queryFn: () => fetchNotes(currentPage, 12, search, tag),
     placeholderData: keepPreviousData,
-    initialData: currentPage === 1 && search === '' ? initialData : undefined,
+    initialData: currentPage === 1 && search === "" ? initialData : undefined,
   });
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,26 +57,22 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
 
   useEffect(() => {
     if (isSuccess && !isLoading && notes.length === 0) {
-      toast.error('No notes found for your request.');
+      toast.error("No notes found for your request.");
     }
   }, [isSuccess, isLoading, notes.length]);
 
   return (
     <div className={css.app}>
       <header className={css.toolbar}>
-        <SearchBox
-          value={inputValue}
-          onInputChange={handleSearchChange}
-          onSearch={debouncedSearch}
-        />
+        <SearchBox value={inputValue} onChange={handleSearchChange} />
         {totalPages > 1 && (
           <Pagination
             page={currentPage}
-            totalPages={totalPages}
+            pageCount={totalPages}
             onPageChange={setCurrentPage}
           />
         )}
-        <button type="button" className={css.button} onClick={openModal}>
+        <button className={css.button} onClick={openModal}>
           Create note +
         </button>
       </header>
@@ -86,7 +82,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
       {notes.length > 0 && <NoteList notes={notes} />}
       {isModalOpen && (
         <Modal onClose={closeModal}>
-          <NoteForm onClose={closeModal} />
+          <NoteForm onCloseModal={closeModal} />
         </Modal>
       )}
     </div>

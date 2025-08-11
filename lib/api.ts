@@ -1,55 +1,58 @@
-import axios from 'axios';
-import type { CreateNote, Note } from '@/types/note';
+import axios from "axios";
+import type { NewNoteData, Note } from "../types/note";
+const myKey = process.env.NEXT_PUBLIC_NOTES_TOKEN;
+const BASE_URL = "https://notehub-public.goit.study/api";
 
-const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-const baseUrl = process.env.NEXT_PUBLIC_API_BASE;
-
-export interface FetchNotesRes {
+export interface FetchNotesResponse {
   notes: Note[];
   totalPages: number;
 }
 
-export async function fetchNotes(
-  search: string,
+export const fetchNotes = async (
   page: number,
-): Promise<FetchNotesRes> {
-  const response = await axios.get<FetchNotesRes>(`${baseUrl}`, {
+  perPage: number,
+  search: string = "",
+  tag?: string
+): Promise<FetchNotesResponse> => {
+  const response = await axios.get<FetchNotesResponse>(`${BASE_URL}/notes`, {
     params: {
-      page: page,
-      perPage: 12,
-      ...(search && { search }),
+      page,
+      perPage,
+      ...(search.trim() ? { search } : {}),
+      ...(tag && tag !== "All" ? { tag } : {}),
     },
     headers: {
       Authorization: `Bearer ${myKey}`,
     },
   });
-  console.log(fetchNotes);
-  return response.data;
-}
 
-export async function createNote(newNote: CreateNote): Promise<Note> {
-  const response = await axios.post<Note>(`${baseUrl}`, newNote, {
-    headers: {
-      Authorization: `Bearer ${myKey}`,
-    },
-  });
   return response.data;
-}
+};
 
-export async function deleteNote(id: string): Promise<Note> {
-  const response = await axios.delete<Note>(`${baseUrl}/${id}`, {
+export const fetchNoteById = async (id: string) => {
+  const response = await axios.get<Note>(`${BASE_URL}/notes/${id}`, {
     headers: {
       Authorization: `Bearer ${myKey}`,
     },
   });
   return response.data;
-}
+};
 
-export async function fetchNoteById(id: string): Promise<Note> {
-  const response = await axios.get<Note>(`${baseUrl}/${id}`, {
+export const createNote = async (noteData: NewNoteData): Promise<Note> => {
+  const response = await axios.post<Note>(`${BASE_URL}/notes`, noteData, {
+    headers: {
+      Authorization: `Bearer ${myKey}`,
+    },
+  });
+
+  return response.data;
+};
+
+export const deleteNote = async (noteId: string): Promise<Note> => {
+  const response = await axios.delete<Note>(`${BASE_URL}/notes/${noteId}`, {
     headers: {
       Authorization: `Bearer ${myKey}`,
     },
   });
   return response.data;
-}
+};

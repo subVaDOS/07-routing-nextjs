@@ -1,7 +1,18 @@
-'use client';
+"use client";
 
-import type { Props } from '@/app/notes/error';
+type Props = {
+  error: Error;
+  reset: () => void;
+};
 
-export default function Error({ error }: Props) {
-  return <p>Could not fetch note details. {error.message}</p>;
-}
+const Error = ({ error, reset }: Props) => {
+  return (
+    <div>
+      <p>Could not fetch note details. {error.message}</p>
+
+      <button onClick={reset}>Reset</button>
+    </div>
+  );
+};
+
+export default Error;

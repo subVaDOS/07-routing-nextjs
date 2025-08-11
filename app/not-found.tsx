@@ -1,6 +1,6 @@
-import css from './home.module.css';
+import css from "./page.module.css";
 
-function NotFound() {
+const NotFound = () => {
   return (
     <div>
       <h1 className={css.title}>404 - Page not found</h1>
@@ -9,6 +9,6 @@ function NotFound() {
       </p>
     </div>
   );
-}
+};
 
 export default NotFound;

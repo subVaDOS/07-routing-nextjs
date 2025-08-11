@@ -1,10 +1,8 @@
-import css from './NoteList.module.css';
-import type { Note } from '@/types/note';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { deleteNote } from '@/lib/api';
-
-import toast from 'react-hot-toast';
-import Link from 'next/link';
+import css from "./NoteList.module.css";
+import type { Note } from "../../types/note";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { deleteNote } from "@/lib/api";
+import Link from "next/link";
 
 interface NoteListProps {
   notes: Note[];
@@ -12,23 +10,16 @@ interface NoteListProps {
 
 export default function NoteList({ notes }: NoteListProps) {
   const queryClient = useQueryClient();
-
-  const delMutation = useMutation({
-    mutationFn: deleteNote,
-
-    onSuccess: () => {
-      toast.success('Note deleted successfully!');
-      queryClient.invalidateQueries({ queryKey: ['note'] });
-    },
-    onError: () => {
-      toast.error('Something went wrong...Try again, please');
+  const deleteNoteMutation = useMutation({
+    mutationFn: (noteId: string) => deleteNote(noteId),
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ["notes"] });
     },
   });
 
-  const handleDel = (id: string) => {
-    delMutation.mutate(id);
+  const handleDelete = (noteId: string) => {
+    deleteNoteMutation.mutate(noteId);
   };
-
   return (
     <ul className={css.list}>
       {notes.map((note) => (
@@ -37,10 +28,13 @@ export default function NoteList({ notes }: NoteListProps) {
           <p className={css.content}>{note.content}</p>
           <div className={css.footer}>
             <span className={css.tag}>{note.tag}</span>
-            <Link href={`/notes/${note.id}`} className={css.link}>
-              View Details
+            <Link className={css.link} href={`/notes/${note.id}`}>
+              View details
             </Link>
-            <button className={css.button} onClick={() => handleDel(note.id)}>
+            <button
+              className={css.button}
+              onClick={() => handleDelete(note.id)}
+            >
               Delete
             </button>
           </div>
