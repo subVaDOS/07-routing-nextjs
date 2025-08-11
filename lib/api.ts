@@ -23,7 +23,7 @@ export async function fetchNotes(
       Authorization: `Bearer ${myKey}`,
     },
   });
-
+  console.log(fetchNotes);
   return response.data;
 }
 
