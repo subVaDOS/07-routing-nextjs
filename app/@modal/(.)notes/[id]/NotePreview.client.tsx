@@ -1,9 +1,9 @@
-"use client";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
-import { fetchNoteById } from "@/lib/api";
-import css from "./NotePreview.module.css";
-import Modal from "@/components/Modal/Modal";
+'use client';
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
+import { fetchNoteById } from '@/lib/api';
+import css from './NotePreview.module.css';
+import Modal from '@/components/Modal/Modal';
 
 const NotePreview = () => {
   const { id } = useParams<{ id: string }>();
@@ -12,7 +12,7 @@ const NotePreview = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["note", id],
+    queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
   });
@@ -20,7 +20,11 @@ const NotePreview = () => {
   if (isLoading) return <p>Loading, please wait...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
   return (
-    <Modal>
+    <Modal
+      onClose={() => {
+        /* TODO: handle modal close, e.g., navigate away or set state */
+      }}
+    >
       <div className={css.container}>
         <div className={css.item}>
           <div className={css.header}>

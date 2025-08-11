@@ -2,7 +2,7 @@ import axios from 'axios';
 import type { CreateNote, Note } from '@/types/note';
 
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
-const baseUrl = 'https://notehub-public.goit.study/api/notes';
+const baseUrl = process.env.NEXT_PUBLIC_API_BASE;
 
 export interface FetchNotesRes {
   notes: Note[];
