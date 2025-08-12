@@ -53,6 +53,7 @@ export default function NotesClient({ initialData, tag }: NotesClientProps) {
   const closeModal = () => setIsModalOpen(false);
 
   const notes: Note[] = data?.notes ?? [];
+
   const totalPages: number = data?.totalPages ?? 1;
 
   useEffect(() => {
