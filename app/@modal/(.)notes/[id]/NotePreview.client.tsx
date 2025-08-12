@@ -1,6 +1,7 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { fetchNoteById } from "@/lib/api";
 import css from "./NotePreview.module.css";
 import Modal from "@/components/Modal/Modal";
@@ -26,7 +27,7 @@ const NotePreview: React.FC = () => {
   if (isLoading) return <p>Loading, please wait...</p>;
   if (error || !note) return <p>Something went wrong.</p>;
   return (
-    <Modal>
+    <Modal onClose={handleClose}>
       <div className={css.container}>
         <button
           className={css.closeButton}
