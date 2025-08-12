@@ -63,7 +63,9 @@ export default function NoteForm({ onCloseModal }: NoteFormProps) {
       {({ isValid, isSubmitting }) => (
         <Form className={css.form}>
           <div className={css.formGroup}>
-            <label htmlFor={`${fieldId}-title`}>Title</label>
+            <label htmlFor={`${fieldId}-title`}>
+              <p>Title</p>
+            </label>
             <Field
               id={`${fieldId}-title`}
               name="title"
@@ -73,7 +75,9 @@ export default function NoteForm({ onCloseModal }: NoteFormProps) {
             <ErrorMessage name="title" component="span" className={css.error} />
           </div>
           <div className={css.formGroup}>
-            <label htmlFor={`${fieldId}-content`}>Content</label>
+            <label htmlFor={`${fieldId}-content`}>
+              <p>Content</p>
+            </label>
             <Field
               as="textarea"
               id={`${fieldId}-content`}
@@ -88,7 +92,9 @@ export default function NoteForm({ onCloseModal }: NoteFormProps) {
             />
           </div>
           <div className={css.formGroup}>
-            <label htmlFor={`${fieldId}-tag`}>Tag</label>
+            <label htmlFor={`${fieldId}-tag`}>
+              <p>Tag</p>
+            </label>
             <Field
               as="select"
               id={`${fieldId}-tag`}

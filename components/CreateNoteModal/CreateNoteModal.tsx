@@ -30,13 +30,9 @@ export default function CreateNoteModal({
       document.body.style.overflow = "";
     };
   }, [onClose]);
+
   return createPortal(
-    <div
-      className={css.backdrop}
-      onClick={handleBackdropClick}
-      role="dialog"
-      aria-modal="true"
-    >
+    <div className={css.backdrop} onClick={handleBackdropClick} role="dialog">
       <div className={css.modal}>{children}</div>
     </div>,
     document.body
