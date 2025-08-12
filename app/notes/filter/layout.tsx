@@ -3,7 +3,6 @@ import css from "./LayoutNotes.module.css";
 type Props = {
   children: React.ReactNode;
   sidebar: React.ReactNode;
-  onClose?: () => void;
 };
 
 const NotesLayout = ({ children, sidebar }: Props) => {

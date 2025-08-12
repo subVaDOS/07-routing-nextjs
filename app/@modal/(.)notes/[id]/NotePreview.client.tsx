@@ -6,6 +6,7 @@ import { fetchNoteById } from "@/lib/api";
 import css from "./NotePreview.module.css";
 import Modal from "@/components/Modal/Modal";
 import { FiX } from "react-icons/fi";
+import React from "react";
 
 const NotePreview: React.FC = () => {
   const { id } = useParams<{ id: string }>();
